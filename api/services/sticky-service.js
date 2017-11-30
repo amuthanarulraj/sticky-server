@@ -64,7 +64,7 @@ exports.get = function (stickyId, callback) {
  * @param {function} callback {Sucess callback function}
  */
 exports.update = function (sticky, callback) {
-    sticky.modified_date = Date.now;
+    sticky.modified_date = new Date();
     Sticky.findOneAndUpdate({
         _id: sticky._id
     }, sticky, {
