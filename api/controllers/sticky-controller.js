@@ -5,7 +5,6 @@
 'use strict';
 //import sticky service.
 const stickyService = require('../services/sticky-service');
-
 /**
  * Returns a list of stickies in JSON based on the
  * search parameters.
