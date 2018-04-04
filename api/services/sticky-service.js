@@ -4,7 +4,7 @@
 
 'use strict';
 const mongoose = require('mongoose'),
-    Sticky = mongoose.model('Sticky');
+    Sticky = mongoose.model('stickies');
 
 /**
  * Throws error if error object is present.
@@ -88,5 +88,3 @@ exports.delete = function (stickyId, callback) {
         callback();
     });
 };
-
-module.exports = "Sticky Service";

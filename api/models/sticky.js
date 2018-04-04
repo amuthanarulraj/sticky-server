@@ -37,4 +37,4 @@ let StickySchema = new Schema({
     versionKey: false
 });
 
-module.exports = mongoose.model('Sticky', StickySchema);
+module.exports = mongoose.model('stickies', StickySchema);
