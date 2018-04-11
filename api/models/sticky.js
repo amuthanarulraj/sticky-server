@@ -36,5 +36,14 @@ let StickySchema = new Schema({
 }, {
     versionKey: false
 });
+// Duplicate the id field as mongoose returns _id field instead of id.
+StickySchema.virtual('id').get(function(){
+    return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialised.
+StickySchema.set('toJSON', {
+    virtuals: true
+});
 
 module.exports = mongoose.model('stickies', StickySchema);
