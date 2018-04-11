@@ -24,10 +24,11 @@ let throwError = function (error) {
  * @param {function} callback {Sucess callback function}
  */
 exports.search = function (params, callback) {
-    Sticky.find(params, function (err, stickies) {
+    let resultCallback = function (err, stickies) {
         throwError(err);
         callback(stickies);
-    });
+    };
+    Sticky.find(params, resultCallback);
 };
 
 /**
@@ -37,11 +38,12 @@ exports.search = function (params, callback) {
  * @param {function} callback {Sucess callback function}
  */
 exports.save = function (sticky, callback) {
-    let newSticky = new Sticky(sticky);
-    newSticky.save(function (err, sticky) {
-        throwError(err);
-        callback(sticky);
-    });
+    let newSticky = new Sticky(sticky),
+        resultCallback = function (err, sticky) {
+            throwError(err);
+            callback(sticky);
+    };
+    newSticky.save(resultCallback);
 };
 
 /**
@@ -51,10 +53,11 @@ exports.save = function (sticky, callback) {
  * @param {function} callback {Sucess callback function}
  */
 exports.get = function (stickyId, callback) {
-    Sticky.findById(stickyId, function (err, sticky) {
+    let resultCallback = function (err, sticky) {
         throwError(err);
         callback(sticky);
-    });
+    };
+    Sticky.findById(stickyId, resultCallback);
 };
 
 /**
@@ -64,15 +67,16 @@ exports.get = function (stickyId, callback) {
  * @param {function} callback {Sucess callback function}
  */
 exports.update = function (sticky, callback) {
+    let resultCallback = function (err, sticky) {
+        throwError(err);
+        callback(sticky);
+    };
     sticky.modified_date = new Date();
     Sticky.findOneAndUpdate({
         _id: sticky._id
     }, sticky, {
         new: true
-    }, function (err, sticky) {
-        throwError(err);
-        callback(sticky);
-    });
+    }, resultCallback);
 };
 
 /**
@@ -82,9 +86,11 @@ exports.update = function (sticky, callback) {
  * @param {function} callback {Sucess callback function}
  */
 exports.delete = function (stickyId, callback) {
+    let resultCallback = function (err, sticky) {
+        throwError(err);
+        callback();
+    };
     Sticky.remove({
         _id: stickyId
-    }, function (err, task) {
-        callback();
-    });
+    }, resultCallback);
 };

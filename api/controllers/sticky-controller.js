@@ -13,10 +13,11 @@ const stickyService = require('../services/sticky-service');
  * @param {response} {HTTP response object}
  */
 exports.list = function (request, response) {
-    stickyService.search({}, function (stickies) {
+    let callback = function (stickies) {
         response.status(200);
         response.json(stickies);
-    });
+    };
+    stickyService.search({}, callback);
 };
 
 /**
@@ -27,10 +28,12 @@ exports.list = function (request, response) {
  * @param {response} {HTTP response object}
  */
 exports.post = function (request, response) {
-    let newSticky = Object.assign({}, request.body);
-    stickyService.save(newSticky, function (sticky) {
+    let newSticky = Object.assign({}, request.body),
+        callback = function (sticky) {
+        response.status(200);
         response.json(sticky);
-    });
+    };
+    stickyService.save(newSticky, callback);
 };
 
 /**
@@ -40,9 +43,11 @@ exports.post = function (request, response) {
  * @param {response} {HTTP response object}
  */
 exports.get = function (request, response) {
-    stickyService.get(request.params.stickyId, function (sticky) {
+    let callback = function (sticky) {
+        response.status(200);
         response.json(sticky);
-    });
+    };
+    stickyService.get(request.params.stickyId, callback);
 };
 
 /**
@@ -52,11 +57,13 @@ exports.get = function (request, response) {
  * @param {response} {HTTP response object}
  */
 exports.put = function (request, response) {
-    let sticky = Object.assign({}, request.body);;
-    sticky._id = request.params.stickyId;
-    stickyService.update(sticky, function (sticky) {
+    let sticky = Object.assign({}, request.body),
+        callback = function (sticky) {
+        response.status(200);
         response.json(sticky);
-    });
+    };
+    sticky._id = request.params.stickyId;
+    stickyService.update(sticky, callback);
 };
 
 /**
@@ -66,9 +73,11 @@ exports.put = function (request, response) {
  * @param {response} {HTTP response object}
  */
 exports.delete = function (request, response) {
-    stickyService.delete(request.params.stickyId, function (sticky) {
+    let callback = function (sticky) {
+        response.status(200);
         response.json({
             message: 'Sticky Successfully deleted'
         });
-    });
+    };
+    stickyService.delete(request.params.stickyId, callback);
 };
