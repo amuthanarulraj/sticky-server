@@ -7,90 +7,53 @@ const mongoose = require('mongoose'),
     Sticky = mongoose.model('stickies');
 
 /**
- * Throws error if error object is present.
- *
- * @param {Object} error {Error object}
- */
-let throwError = function (error) {
-    if (error) {
-        throw Error(error);
-    }
-};
-
-/**
  * Returns an array of sticky object matching the search parameters.
  *
  * @param {Object} params {Search parameters}
- * @param {function} callback {Sucess callback function}
  */
-exports.search = function (params, callback) {
-    let resultCallback = function (err, stickies) {
-        throwError(err);
-        callback(stickies);
-    };
-    Sticky.find(params, resultCallback);
+exports.search = function (params) {
+    const promise = Sticky.find(params).exec()
+    return promise;
 };
 
 /**
  * Saves and returns the new sticky object.
  *
  * @param {Object} sticky {Sticky object}
- * @param {function} callback {Sucess callback function}
  */
-exports.save = function (sticky, callback) {
-    let newSticky = new Sticky(sticky),
-        resultCallback = function (err, sticky) {
-            throwError(err);
-            callback(sticky);
-    };
-    newSticky.save(resultCallback);
+exports.save = function (sticky) {
+    const newSticky = new Sticky(sticky);
+    const promise = newSticky.save();
+    return promise;
 };
 
 /**
  * Returns the sticky object matching the id.
  *
  * @param {string} stickyId {Id of the sticky object}
- * @param {function} callback {Sucess callback function}
  */
-exports.get = function (stickyId, callback) {
-    let resultCallback = function (err, sticky) {
-        throwError(err);
-        callback(sticky);
-    };
-    Sticky.findById(stickyId, resultCallback);
+exports.get = function (stickyId) {
+    const promise = Sticky.findById(stickyId).exec();
+    return promise
 };
 
 /**
  * Updates and returns the sticky object.
  *
  * @param {Object} sticky {Sticky object}
- * @param {function} callback {Sucess callback function}
  */
-exports.update = function (sticky, callback) {
-    let resultCallback = function (err, sticky) {
-        throwError(err);
-        callback(sticky);
-    };
+exports.update = function (sticky) {
     sticky.modified_date = new Date();
-    Sticky.findOneAndUpdate({
-        _id: sticky._id
-    }, sticky, {
-        new: true
-    }, resultCallback);
+    const promise = Sticky.findOneAndUpdate({_id: sticky._id}, sticky).exec();
+    return promise;
 };
 
 /**
  * Deletes the sticky object matching the id.
  *
  * @param {string} stickyId {Id of the sticky object}
- * @param {function} callback {Sucess callback function}
  */
-exports.delete = function (stickyId, callback) {
-    let resultCallback = function (err, sticky) {
-        throwError(err);
-        callback();
-    };
-    Sticky.remove({
-        _id: stickyId
-    }, resultCallback);
+exports.delete = function (stickyId) {
+    const promise = Sticky.remove({_id: stickyId});
+    return promise;
 };
