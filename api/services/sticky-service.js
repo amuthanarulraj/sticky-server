@@ -12,7 +12,7 @@ const mongoose = require('mongoose'),
  * @param {Object} params {Search parameters}
  */
 exports.search = function (params) {
-    const promise = Sticky.find(params).exec()
+    const promise = Sticky.find(params).exec();
     return promise;
 };
 
