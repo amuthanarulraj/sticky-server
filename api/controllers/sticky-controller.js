@@ -13,11 +13,13 @@ const stickyService = require('../services/sticky-service');
  * @param {response} {HTTP response object}
  */
 exports.list = function (request, response) {
-    let callback = function (stickies) {
+    const resolve = (stickies) => {
         response.status(200);
         response.json(stickies);
     };
-    stickyService.search({}, callback);
+    stickyService.search({})
+        .then(resolve)
+        .catch(renderErrorResponse(response));
 };
 
 /**
@@ -28,12 +30,14 @@ exports.list = function (request, response) {
  * @param {response} {HTTP response object}
  */
 exports.post = function (request, response) {
-    let newSticky = Object.assign({}, request.body),
-        callback = function (sticky) {
+    const newSticky = Object.assign({}, request.body);
+    const resolve = (sticky) => {
         response.status(200);
         response.json(sticky);
     };
-    stickyService.save(newSticky, callback);
+    stickyService.save(newSticky)
+        .then(resolve)
+        .catch(renderErrorResponse(response));
 };
 
 /**
@@ -43,11 +47,13 @@ exports.post = function (request, response) {
  * @param {response} {HTTP response object}
  */
 exports.get = function (request, response) {
-    let callback = function (sticky) {
+    const resolve = (sticky) => {
         response.status(200);
         response.json(sticky);
     };
-    stickyService.get(request.params.stickyId, callback);
+    stickyService.get(request.params.stickyId)
+        .then(resolve)
+        .catch(renderErrorResponse(response));
 };
 
 /**
@@ -57,13 +63,15 @@ exports.get = function (request, response) {
  * @param {response} {HTTP response object}
  */
 exports.put = function (request, response) {
-    let sticky = Object.assign({}, request.body),
-        callback = function (sticky) {
+    const sticky = Object.assign({}, request.body);
+    const resolve = (sticky) => {
         response.status(200);
         response.json(sticky);
     };
     sticky._id = request.params.stickyId;
-    stickyService.update(sticky, callback);
+    stickyService.update(sticky)
+        .then(resolve)
+        .catch(renderErrorResponse(response));
 };
 
 /**
@@ -73,11 +81,30 @@ exports.put = function (request, response) {
  * @param {response} {HTTP response object}
  */
 exports.delete = function (request, response) {
-    let callback = function (sticky) {
+    const resolve = (sticky) => {
         response.status(200);
         response.json({
             message: 'Sticky Successfully deleted'
         });
     };
-    stickyService.delete(request.params.stickyId, callback);
+    stickyService.delete(request.params.stickyId)
+        .then(resolve)
+        .catch(renderErrorResponse(response));
+};
+/**
+ * Throws error if error object is present.
+ *
+ * @param {Response} response The response object
+ * @return {Function} The error handler function.
+ */
+let renderErrorResponse = (response) => {
+    const errorCallback = (error) => {
+        if (error) {
+            response.status(500);
+            response.json({
+                message: error.message
+            });
+        }
+    }
+    return errorCallback;
 };

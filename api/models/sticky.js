@@ -16,7 +16,7 @@ let StickySchema = new Schema({
     /**
      * Sticky created date.
      */
-    created_date: {
+    createdDate: {
         type: Date,
         default: Date.now
     },
@@ -29,7 +29,7 @@ let StickySchema = new Schema({
     /**
      * Last modified date.
      */
-    modified_date: {
+    modifiedDate: {
         type: Date,
         default: Date.now
     }
